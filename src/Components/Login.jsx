@@ -12,13 +12,15 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../Utils/userSlice";
+import { BackgroundImage, LOGO } from "../Utils/constants";
 
 const Login = () => {
   const [isSignForm, setIsSignForm] = useState(true);
   const [isVisible, setisVisible] = useState(false);
   const [errorMessage, seterrorMessage] = useState(null);
-  const Navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const toggleSignup = () => {
     setIsSignForm(!isSignForm);
@@ -47,31 +49,27 @@ const Login = () => {
         email.current.value,
         password.current.value
       )
-        .then((userCredential) => {
-          // Signed up
+        .then(async (userCredential) => {
           const user = userCredential.user;
-          updateProfile(user, {
+          
+          await updateProfile(user, {
             displayName: name.current.value,
-            photoURL: "https://example.com/jane-q-user/profile.jpg",
-          })
-            .then(() => {
-              Navigate("/browse");
+            photoURL: LOGO,
+          });
+      
+          // Fetch updated user details from user object (not auth.currentUser)
+          dispatch(
+            addUser({
+              uid: user.uid,
+              displayName: user.displayName,
+              photoURL: user.photoURL,
+              email: user.email,
             })
-            .catch((error) => {
-              seterrorMessage(error);
-            });
-
-          console.log(user);
-          Navigate("/browse");
-          // ...
+          );
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          seterrorMessage(errorCode + " " + errorMessage);
-          console.log(errorCode);
-          // ..
-        });
+          seterrorMessage(error.code + " " + error.message);
+        });      
     } else {
       signInWithEmailAndPassword(
         auth,
@@ -79,11 +77,7 @@ const Login = () => {
         password.current.value
       )
         .then((userCredential) => {
-          // Signed in
           const user = userCredential.user;
-          console.log(user);
-          Navigate("/browse");
-          // ...
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -96,11 +90,11 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <div className="absolute bg-black">
+      <div className="absolute inset-0 bg-black">
         <img
-          className="w-screen h-screen overflow-hidden object-cover"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/f268d374-734d-474f-ad13-af5ba87ef9fc/web/IN-en-20250210-TRIFECTA-perspective_92338d5d-6ccd-4b1a-8536-eb2b0240a55e_large.jpg"
-          alt=""
+          className="w-screen h-screen object-cover"
+          src={BackgroundImage}
+          alt="Background"
         />
       </div>
       <form
