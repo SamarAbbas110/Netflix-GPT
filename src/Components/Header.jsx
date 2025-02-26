@@ -10,7 +10,7 @@ const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((store) => store.user);
+  const user = useSelector((store) => store.user); //It is use to access the state of the user slice.
 
   const handleSignout = () => {
     signOut(auth)

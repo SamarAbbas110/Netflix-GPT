@@ -54,7 +54,7 @@ const Login = () => {
           
           await updateProfile(user, {
             displayName: name.current.value,
-            photoURL: LOGO,
+            photoURL: LOGO
           });
       
           // Fetch updated user details from user object (not auth.currentUser)
