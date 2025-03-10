@@ -9,10 +9,10 @@ const VideoBackground = ({ movieID }) => {
   useTrailers(movieID); // call the useTrailers custom hook to fetch trailers  
 
   return (
-    <div className="w-screen">
+    <div className="w-screen overflow-x-hidden">
       <iframe
-        className="w-screen aspect-video"
-        src={"https://www.youtube.com/embed/" + trailerStateVideo?.key + "/?&autoplay=1&mute=1"}
+        className="w-full aspect-video"
+        src={"https://www.youtube.com/embed/" + trailerStateVideo?.key + "?&autoplay=1&mute=1"}
         title="YouTube video player"
         
         frameBorder="0"

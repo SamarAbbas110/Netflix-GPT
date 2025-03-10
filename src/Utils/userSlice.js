@@ -15,4 +15,4 @@ const counterSlice = createSlice({
  
 
 export default counterSlice.reducer
-export const { addUser , removeUser} = counterSlice.actions;
+export const { addUser , removeUser} = counterSlice.actions;    
