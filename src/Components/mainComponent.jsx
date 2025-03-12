@@ -6,10 +6,8 @@ import { useSelector } from "react-redux";
 const MainComponent = () => {
   const movies = useSelector((state) => state.movies?.nowPlayingMovies); // Get the first movie from the now playing movies list which is store in Redux Store
   if (!movies) return null; //If movies is not loaded yet, return null
-  console.log("moviesss" , movies); //For Debugging Purposes
 
   const mainMovies = movies[0]; // Assuming first movie is the main movie
-  console.log(mainMovies); //For Debugging Purposes
   const { original_title, overview , id} = mainMovies;
   return (
     <div>

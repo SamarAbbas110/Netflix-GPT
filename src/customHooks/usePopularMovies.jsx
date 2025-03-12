@@ -11,7 +11,6 @@ const usePopularMovies = () => {
       MOVIE_API
     );
     const json = await data.json();
-    console.log(json.results);
     dispatch(addNowPopularMovies(json.results)); //addNowPlayingMovies action is dispatched with the fetched movies.
   };
   useEffect(() => {

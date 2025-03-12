@@ -4,15 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../Utils/userSlice";
-import { NetflixLogo } from "../Utils/constants";
+import { NetflixLogo, SUPPORTED_LANG } from "../Utils/constants";
 import { SearchOutlined } from "@ant-design/icons";
 import { addGPTSearch } from "../Utils/GptSearchSlice";
+import { changeLanguage } from "../Utils/configSlice";
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user); //It is use to access the state of the user slice.
+  const GPTSearchSelector = useSelector((store) => store.gptSearch.useGPTsearch);
 
   const handleSignout = () => {
     signOut(auth)
@@ -24,9 +26,12 @@ const Header = () => {
   };
 
   const handleGPTToggle = () => {
-    dispatch(addGPTSearch())
+    dispatch(addGPTSearch());
   };
-  
+
+  const handleSelectLanguage = (e) => {
+    dispatch(changeLanguage(e.target.value));
+  };
 
   //Handling signout and signin Logic
   useEffect(() => {
@@ -60,9 +65,26 @@ const Header = () => {
 
       {user && ( //show icon only
         <div className="flex p-2">
-          <button className="p-2 px-4 mx-4 bg-red-700 font-bold text-white rounded flex items-center justify-center gap-2"  onClick = {handleGPTToggle}>
-            <SearchOutlined className="text-2xl h-5 w-5" />
-            GPT Search
+          {/* show language button when the gptSeach is ture */}
+          {GPTSearchSelector && (
+            <select
+              className="text-white bg-gray-900 p-2 px-4 rounded"
+              onChange={handleSelectLanguage}
+            >
+              {SUPPORTED_LANG.map((lang) => (
+                <option key={lang.identifier} value={lang.identifier}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+          )}
+          <button
+            className="p-2 px-4 mx-4 bg-red-700 font-bold text-white rounded flex items-center justify-center gap-2"
+            onClick={handleGPTToggle}
+          >
+            {/* if we are in GPT search so make button text HomePage */}
+           {GPTSearchSelector ?  "Home Page" : "GPT Search"} 
+            
           </button>
 
           <div className="relative">

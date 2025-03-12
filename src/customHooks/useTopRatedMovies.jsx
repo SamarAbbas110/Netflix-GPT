@@ -11,7 +11,6 @@ const useTopRatedMovies = () => {
       MOVIE_API
     );
     const json = await data.json();
-    console.log(json.results);
     dispatch(addNowTopRatedMovies(json.results)); //addNowPlayingMovies action is dispatched with the fetched movies.
   };
   useEffect(() => {

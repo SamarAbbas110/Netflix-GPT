@@ -11,9 +11,7 @@ const useTrailers = (movieID) => {
         "/videos?language=en-US",
       MOVIE_API
     );
-    console.log("data" , data)
     const response = await data.json();
-    console.log("Api response ", response);
 
     const trailer = response.results.filter(
       (video) => video.type === "Trailer"
